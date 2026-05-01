@@ -38,6 +38,18 @@ export const ENEMY_DAMAGE_FAST = 5;
 export const ENEMY_DAMAGE_TANK = 14;
 export const PLAYER_INVULN_TIME = 0.5;    // seconds after taking damage
 
+// Enemy Shooting
+export const ENEMY_BULLET_SPEED = 220;     // slower than player bullets
+export const ENEMY_BULLET_SIZE = 4;
+export const ENEMY_BULLET_DAMAGE = 6;
+export const ENEMY_BULLET_LIFETIME = 2.5;  // seconds before despawn
+export const ENEMY_FIRE_RATE_NORMAL = 2.5; // seconds between shots (normal)
+export const ENEMY_FIRE_RATE_TANK = 1.8;   // tanks shoot faster
+export const ENEMY_FIRE_RATE_FAST = 3.5;   // fast enemies shoot less often
+export const ENEMY_SHOOT_RANGE = 350;      // max distance to start shooting
+export const ENEMY_SHOOT_MIN_RANGE = 60;   // min distance (melee enemies don't shoot)
+export const ENEMY_BULLET_SPREAD = 0.15;   // radians of random spread
+
 // Spawning
 export const SPAWN_MARGIN = 60;
 export const MAX_ENEMIES_BASE = 12;

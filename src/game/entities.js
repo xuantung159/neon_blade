@@ -6,6 +6,7 @@
 import {
   ARENA_W, ARENA_H, SPAWN_MARGIN,
   ENEMY_SIZE, ENEMY_SPEED_BASE,
+  ENEMY_FIRE_RATE_NORMAL, ENEMY_FIRE_RATE_TANK, ENEMY_FIRE_RATE_FAST,
 } from './constants.js';
 
 /**
@@ -40,6 +41,8 @@ export function spawnEnemy(wave) {
       hitFlash: 0,
       alive: true,
       angle: 0,
+      fireCd: ENEMY_FIRE_RATE_TANK * Math.random(), // stagger initial shots
+      fireRate: ENEMY_FIRE_RATE_TANK,
     };
   }
 
@@ -54,6 +57,8 @@ export function spawnEnemy(wave) {
       hitFlash: 0,
       alive: true,
       angle: 0,
+      fireCd: ENEMY_FIRE_RATE_FAST * Math.random(),
+      fireRate: ENEMY_FIRE_RATE_FAST,
     };
   }
 
@@ -68,6 +73,8 @@ export function spawnEnemy(wave) {
     hitFlash: 0,
     alive: true,
     angle: 0,
+    fireCd: ENEMY_FIRE_RATE_NORMAL * Math.random(),
+    fireRate: ENEMY_FIRE_RATE_NORMAL,
   };
 }
 
