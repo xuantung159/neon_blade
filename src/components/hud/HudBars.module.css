@@ -1,0 +1,115 @@
+/* HudBars.module.css */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  max-width: 300px;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+/* === HEADER === */
+
+.barHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.barLabel {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.barLabelSm {
+  composes: barLabel;
+  font-size: 11px;
+}
+
+.barValue {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.barValueSm {
+  composes: barValue;
+  font-size: 11px;
+}
+
+/* === TRACK + FILL === */
+
+.barTrack {
+  width: 100%;
+  height: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.barTrackSm {
+  height: 6px;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* === HP COLORS === */
+
+.hpGreen {
+  background: var(--neon-green);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+.hpAmber {
+  background: var(--neon-amber);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.hpRed {
+  background: var(--neon-red);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.flash {
+  animation: flicker 1s infinite;
+}
+
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.8; }
+  98% { opacity: 0.6; }
+  99% { opacity: 0.9; }
+}
+
+/* === STAMINA === */
+
+.staminaFill {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}
+
+/* === SEGMENT LINES === */
+
+.segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,126 @@
+/* MainMenu.module.css */
+
+.container {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-deep);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* === LAYERS === */
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  z-index: 1;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* === LOGO === */
+
+.logoArea {
+  z-index: 4;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--neon-cyan);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #c084fc, #818cf8, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5));
+  animation: float 3s ease-in-out infinite;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* === MENU === */
+
+.menuWrap {
+  z-index: 4;
+}
+
+.btnStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* === VERSION TAG === */
+
+.version {
+  position: fixed;
+  bottom: 16px;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  z-index: 4;
+}
+
+/* === ANIMATIONS === */
+
+.animFadeInUp {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.delay300 { animation-delay: 300ms; }
+.delay400 { animation-delay: 400ms; }
+.delay500 { animation-delay: 500ms; }
+.delay600 { animation-delay: 600ms; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}

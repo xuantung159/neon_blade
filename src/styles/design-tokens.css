@@ -1,0 +1,84 @@
+/* ================================================================
+   NEON BLADE — Design Tokens
+   Single source of truth for all design decisions
+   ================================================================ */
+
+:root {
+
+  /* === BACKGROUNDS === */
+  --bg-deep: #020617;
+  --bg-mid: #0f172a;
+  --bg-surface: rgba(15, 23, 42, 0.7);
+  --bg-overlay: rgba(2, 6, 23, 0.85);
+
+  /* === NEON ACCENTS === */
+  --neon-purple: #a855f7;
+  --neon-purple-dim: rgba(168, 85, 247, 0.4);
+  --glow-purple: 0 0 15px rgba(168, 85, 247, 0.5), 0 0 45px rgba(168, 85, 247, 0.2);
+
+  --neon-cyan: #06b6d4;
+  --neon-cyan-dim: rgba(6, 182, 212, 0.4);
+  --glow-cyan: 0 0 15px rgba(6, 182, 212, 0.5), 0 0 45px rgba(6, 182, 212, 0.2);
+
+  --neon-green: #22c55e;
+  --neon-green-dim: rgba(34, 197, 94, 0.4);
+  --glow-green: 0 0 15px rgba(34, 197, 94, 0.5), 0 0 45px rgba(34, 197, 94, 0.2);
+
+  --neon-red: #ef4444;
+  --neon-red-dim: rgba(239, 68, 68, 0.4);
+  --glow-red: 0 0 15px rgba(239, 68, 68, 0.5), 0 0 45px rgba(239, 68, 68, 0.2);
+
+  --neon-amber: #f59e0b;
+  --neon-amber-dim: rgba(245, 158, 11, 0.4);
+  --glow-amber: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 45px rgba(245, 158, 11, 0.2);
+
+  /* === GLASSMORPHISM === */
+  --glass-bg: rgba(15, 23, 42, 0.55);
+  --glass-border: rgba(168, 85, 247, 0.25);
+  --glass-blur: 20px;
+  --glass-saturate: 1.5;
+
+  /* === TEXT === */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-dim: #475569;
+  --text-inverse: #020617;
+
+  /* === SPACING (8px grid) === */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --space-10: 80px;
+  --space-11: 88px;
+  --space-12: 96px;
+
+  /* === BORDER RADIUS === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* === Z-INDEX SCALE === */
+  --z-game: 0;
+  --z-hud: 10;
+  --z-overlay: 20;
+  --z-modal: 30;
+  --z-toast: 40;
+
+  /* === TRANSITIONS === */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === TYPOGRAPHY REFERENCES === */
+  --font-display: 'Orbitron', monospace;
+  --font-ui: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}

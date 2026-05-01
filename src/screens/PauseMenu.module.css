@@ -1,0 +1,83 @@
+/* PauseMenu.module.css */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.panelWrap {
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--neon-purple);
+  text-align: center;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
+  margin: 16px 0;
+}
+
+/* === STATS === */
+
+.statsRow {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+
+.statBlock {
+  text-align: center;
+}
+
+.statLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+/* === BUTTONS === */
+
+.btnStack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* === KEYFRAMES === */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
