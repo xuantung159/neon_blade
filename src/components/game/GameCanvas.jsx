@@ -19,6 +19,9 @@ import {
   KILL_SCORE_BASE, KILL_SCORE_PER_COMBO, PASSIVE_SCORE_RATE,
   SCREEN_SHAKE_HIT, SCREEN_SHAKE_KILL, SCREEN_SHAKE_DAMAGE,
   SHAKE_INTENSITY_HIT, SHAKE_INTENSITY_KILL, SHAKE_INTENSITY_DAMAGE,
+  ENEMY_BULLET_SPEED, ENEMY_BULLET_SIZE, ENEMY_BULLET_DAMAGE,
+  ENEMY_BULLET_LIFETIME, ENEMY_SHOOT_RANGE, ENEMY_SHOOT_MIN_RANGE,
+  ENEMY_BULLET_SPREAD,
 } from '../../game/constants.js';
 import { OBSTACLES, PILLARS, collidesAny } from '../../game/mapData.js';
 import { spawnEnemy, spawnParticles } from '../../game/entities.js';
@@ -61,7 +64,7 @@ export default function GameCanvas({ paused, onDeath, onUpdate }) {
         hp: 100, maxHp: 100, stamina: 100, maxStamina: 100,
         invuln: 0, hitFlash: 0, trail: [],
       },
-      enemies, bullets: [], particles: [],
+      enemies, bullets: [], enemyBullets: [], particles: [],
       score: 0, wave: 1, time: 0, kills: 0,
       combo: { count: 0, lastHit: 0, maxCombo: 0 },
       spawnTimer: 0, nextSpawnInterval: 2,
@@ -320,6 +323,59 @@ export default function GameCanvas({ paused, onDeath, onUpdate }) {
       }
       s.enemies = s.enemies.filter(e => e.alive);
 
+      // ══ 4b. ENEMY SHOOTING ═════════════════════════════
+      for (const e of s.enemies) {
+        if (!e.alive) continue;
+        e.fireCd -= dt;
+        const dToPlayer = dist(e, p);
+        // Only shoot when in range and not too close (melee range)
+        if (e.fireCd <= 0 && dToPlayer < ENEMY_SHOOT_RANGE && dToPlayer > ENEMY_SHOOT_MIN_RANGE) {
+          e.fireCd = e.fireRate;
+          const aimAngle = Math.atan2(p.y - e.y, p.x - e.x);
+          const spread = (Math.random() - 0.5) * ENEMY_BULLET_SPREAD;
+          const ba = aimAngle + spread;
+          // Determine bullet color based on enemy type
+          const bulletColor = e.type === 'tank' ? '#f59e0b' : e.type === 'fast' ? '#ef4444' : '#c084fc';
+          s.enemyBullets.push({
+            x: e.x + Math.cos(aimAngle) * (e.size + 4),
+            y: e.y + Math.sin(aimAngle) * (e.size + 4),
+            vx: Math.cos(ba) * ENEMY_BULLET_SPEED,
+            vy: Math.sin(ba) * ENEMY_BULLET_SPEED,
+            life: ENEMY_BULLET_LIFETIME,
+            damage: ENEMY_BULLET_DAMAGE,
+            color: bulletColor,
+          });
+        }
+      }
+
+      // ══ 4c. ENEMY BULLETS ══════════════════════════════
+      for (const eb of s.enemyBullets) {
+        eb.x += eb.vx * dt;
+        eb.y += eb.vy * dt;
+        eb.life -= dt;
+        // Out of bounds
+        if (eb.x < -10 || eb.x > ARENA_W + 10 || eb.y < -10 || eb.y > ARENA_H + 10) {
+          eb.life = 0; continue;
+        }
+        // Hit obstacle
+        if (collidesAny(eb.x, eb.y, ENEMY_BULLET_SIZE)) {
+          eb.life = 0;
+          s.particles.push(...spawnParticles(eb.x, eb.y, eb.color, 3));
+          continue;
+        }
+        // Hit player
+        if (dist(eb, p) < ENEMY_BULLET_SIZE + PLAYER_SIZE * 0.6 && p.invuln <= 0 && !p.dashing) {
+          eb.life = 0;
+          p.hp -= eb.damage;
+          p.invuln = PLAYER_INVULN_TIME;
+          p.hitFlash = 0.15;
+          s.screenShake = SCREEN_SHAKE_DAMAGE;
+          s.shakeIntensity = SHAKE_INTENSITY_DAMAGE;
+          s.particles.push(...spawnParticles(p.x, p.y, '#ef4444', 8));
+        }
+      }
+      s.enemyBullets = s.enemyBullets.filter(eb => eb.life > 0);
+
       // ══ 5-7. COMBO, PARTICLES, WAVES ══════════════════
       if (s.combo.count > 0 && now - s.combo.lastHit > COMBO_TIMEOUT) { s.combo.count = 0; s.combo.lastHit = 0; }
       for (const pt of s.particles) { pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.vx *= 0.94; pt.vy *= 0.94; pt.life -= dt; }
@@ -405,6 +461,23 @@ export default function GameCanvas({ paused, onDeath, onUpdate }) {
         const trG = ctx.createLinearGradient(tX, tY, b.x, b.y); trG.addColorStop(0, 'rgba(6,182,212,0)'); trG.addColorStop(1, 'rgba(6,182,212,0.8)');
         ctx.strokeStyle = trG; ctx.lineWidth = BULLET_SIZE * 1.2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(tX, tY); ctx.lineTo(b.x, b.y); ctx.stroke();
         ctx.fillStyle = '#fff'; ctx.shadowColor = 'rgba(6,182,212,0.8)'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(b.x, b.y, BULLET_SIZE, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+      }
+
+      // Enemy Bullets
+      for (const eb of s.enemyBullets) {
+        const ebAng = Math.atan2(eb.vy, eb.vx);
+        const etX = eb.x - Math.cos(ebAng) * 10, etY = eb.y - Math.sin(ebAng) * 10;
+        const etrG = ctx.createLinearGradient(etX, etY, eb.x, eb.y);
+        etrG.addColorStop(0, 'rgba(239,68,68,0)'); etrG.addColorStop(1, eb.color);
+        ctx.strokeStyle = etrG; ctx.lineWidth = ENEMY_BULLET_SIZE * 1.0; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(etX, etY); ctx.lineTo(eb.x, eb.y); ctx.stroke();
+        // Glow core
+        ctx.fillStyle = '#fff'; ctx.shadowColor = eb.color; ctx.shadowBlur = 12;
+        ctx.beginPath(); ctx.arc(eb.x, eb.y, ENEMY_BULLET_SIZE, 0, Math.PI * 2); ctx.fill();
+        // Outer glow ring
+        ctx.fillStyle = eb.color; ctx.globalAlpha = 0.5;
+        ctx.beginPath(); ctx.arc(eb.x, eb.y, ENEMY_BULLET_SIZE * 1.8, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1; ctx.shadowBlur = 0;
       }
 
       // Enemies
